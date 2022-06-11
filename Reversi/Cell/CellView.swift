@@ -22,10 +22,10 @@ extension Cell {
                     ZStack {
                         Rectangle()
                             .aspectRatio(1.0, contentMode: .fit)
-                            .foregroundColor(.primary)
+                            .foregroundColor(.black)
                         Rectangle()
                             .aspectRatio(1.0, contentMode: .fit)
-                            .foregroundColor(.green)
+                            .foregroundColor(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
                             .padding(1)
                         switch viewStore.disk {
                         case .dark:

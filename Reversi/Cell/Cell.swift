@@ -7,6 +7,7 @@
 
 import Foundation
 import ComposableArchitecture
+import SwiftyReversi
 
 enum Cell {}
 
@@ -33,7 +34,7 @@ extension Cell {
         }
     }
         
-    static func getStore(turn: Disk) -> Store<State, Action> {
-        return .init(initialState: State(), reducer: reducer, environment: Environment(turn: turn))
+    static func getStore(turn: Disk, disk: Disk? = nil) -> Store<State, Action> {
+        return .init(initialState: State(disk: disk), reducer: reducer, environment: Environment(turn: turn))
     }
 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Board.View()
+        Game.View(store: Game.store)
     }
 }
 

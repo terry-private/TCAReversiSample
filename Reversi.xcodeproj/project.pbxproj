@@ -16,6 +16,8 @@
 		095F69692854E5D900743A46 /* ReversiUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F69682854E5D900743A46 /* ReversiUITestsLaunchTests.swift */; };
 		095F697B2854EE2A00743A46 /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F697A2854EE2A00743A46 /* Cell.swift */; };
 		095F697D2854EE6C00743A46 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F697C2854EE6C00743A46 /* CellView.swift */; };
+		095F69802854F11100743A46 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F697F2854F11100743A46 /* Board.swift */; };
+		095F69822854F13300743A46 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F69812854F13300743A46 /* BoardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +50,8 @@
 		095F69682854E5D900743A46 /* ReversiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		095F697A2854EE2A00743A46 /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
 		095F697C2854EE6C00743A46 /* CellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellView.swift; sourceTree = "<group>"; };
+		095F697F2854F11100743A46 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		095F69812854F13300743A46 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +104,7 @@
 			children = (
 				095F694B2854E5D300743A46 /* ReversiApp.swift */,
 				095F694D2854E5D300743A46 /* ContentView.swift */,
+				095F697E2854F0FB00743A46 /* Board */,
 				095F69792854EE1800743A46 /* Cell */,
 				095F694F2854E5D900743A46 /* Assets.xcassets */,
 				095F69512854E5D900743A46 /* Preview Content */,
@@ -139,6 +144,15 @@
 				095F697C2854EE6C00743A46 /* CellView.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		095F697E2854F0FB00743A46 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				095F697F2854F11100743A46 /* Board.swift */,
+				095F69812854F13300743A46 /* BoardView.swift */,
+			);
+			path = Board;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +287,8 @@
 			files = (
 				095F697D2854EE6C00743A46 /* CellView.swift in Sources */,
 				095F694E2854E5D300743A46 /* ContentView.swift in Sources */,
+				095F69802854F11100743A46 /* Board.swift in Sources */,
+				095F69822854F13300743A46 /* BoardView.swift in Sources */,
 				095F694C2854E5D300743A46 /* ReversiApp.swift in Sources */,
 				095F697B2854EE2A00743A46 /* Cell.swift in Sources */,
 			);

@@ -18,6 +18,7 @@
 		095F697D2854EE6C00743A46 /* CellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F697C2854EE6C00743A46 /* CellView.swift */; };
 		095F69802854F11100743A46 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F697F2854F11100743A46 /* Board.swift */; };
 		095F69822854F13300743A46 /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F69812854F13300743A46 /* BoardView.swift */; };
+		095F69852854F37A00743A46 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 095F69842854F37A00743A46 /* ComposableArchitecture */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				095F69852854F37A00743A46 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -171,6 +173,9 @@
 			dependencies = (
 			);
 			name = Reversi;
+			packageProductDependencies = (
+				095F69842854F37A00743A46 /* ComposableArchitecture */,
+			);
 			productName = Reversi;
 			productReference = 095F69482854E5D300743A46 /* Reversi.app */;
 			productType = "com.apple.product-type.application";
@@ -243,6 +248,9 @@
 				Base,
 			);
 			mainGroup = 095F693F2854E5D200743A46;
+			packageReferences = (
+				095F69832854F37A00743A46 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */,
+			);
 			productRefGroup = 095F69492854E5D300743A46 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -615,6 +623,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		095F69832854F37A00743A46 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		095F69842854F37A00743A46 /* ComposableArchitecture */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 095F69832854F37A00743A46 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
+			productName = ComposableArchitecture;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 095F69402854E5D300743A46 /* Project object */;
 }

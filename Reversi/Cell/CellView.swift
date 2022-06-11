@@ -6,49 +6,49 @@
 //
 
 import SwiftUI
+import ComposableArchitecture
 
 extension Cell {
     struct View: SwiftUI.View {
-        @State var state: Bool?
+        let store: Store<State, Action>
+        
         var body: some SwiftUI.View {
-            Button(
-                action: {
-                    guard state != nil else {
-                        state = true
-                        return
+            WithViewStore(store) { viewStore in
+                Button(
+                    action: {
+                        viewStore.send(.flipped)
                     }
-                    state?.toggle()
-                }
-            ) {
-                ZStack {
-                    Rectangle()
-                        .aspectRatio(1.0, contentMode: .fit)
-                        .foregroundColor(.primary)
-                    Rectangle()
-                        .aspectRatio(1.0, contentMode: .fit)
-                        .foregroundColor(.green)
-                        .padding(1)
-                    switch state {
-                    case true:
-                        Circle()
-                            .padding(5)
-                            .foregroundColor(.black)
-                    case false:
-                        Circle()
-                            .padding(5)
-                            .foregroundColor(.white)
-                    default:
-                        EmptyView()
+                ) {
+                    ZStack {
+                        Rectangle()
+                            .aspectRatio(1.0, contentMode: .fit)
+                            .foregroundColor(.primary)
+                        Rectangle()
+                            .aspectRatio(1.0, contentMode: .fit)
+                            .foregroundColor(.green)
+                            .padding(1)
+                        switch viewStore.disk {
+                        case .dark:
+                            Circle()
+                                .padding(5)
+                                .foregroundColor(.black)
+                        case .light:
+                            Circle()
+                                .padding(5)
+                                .foregroundColor(.white)
+                        default:
+                            EmptyView()
+                        }
                     }
                 }
+                .aspectRatio(contentMode: .fit)
             }
-            .aspectRatio(contentMode: .fit)
         }
     }
 }
 
 struct CellView_Previews: PreviewProvider {
     static var previews: some View {
-        Cell.View()
+        Cell.View(store: Cell.getStore(turn: .light))
     }
 }

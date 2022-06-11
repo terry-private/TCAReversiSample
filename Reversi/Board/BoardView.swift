@@ -16,7 +16,7 @@ extension Board {
                     VStack(spacing: 0) {
                         ForEach(0..<boardSize) {y in
                             
-                            Cell.View()
+                            Cell.View(store: Cell.getStore(turn: .light))
                         }
                     }
                 }

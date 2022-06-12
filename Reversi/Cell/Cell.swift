@@ -12,29 +12,31 @@ import SwiftyReversi
 enum Cell {}
 
 extension Cell {
-    struct State: Equatable {
+    struct State:Identifiable, Equatable {
+        var id: Int
         var disk: Disk?
     }
     
     enum Action {
-        case flipped
+        case flipped(Disk)
+        case tapped(Int, Int)
     }
     
-    struct Environment: Equatable {
-        let turn: Disk
-    }
+    struct Environment: Equatable {}
     
     static var reducer: Reducer<State, Action, Environment> {
         .init() { state, action, environment in
             switch action {
-            case .flipped:
-                state.disk = environment.turn
+            case let .flipped(disk):
+                state.disk = disk
+                return .none
+            case .tapped(_, _):
                 return .none
             }
         }
     }
         
-    static func getStore(turn: Disk, disk: Disk? = nil) -> Store<State, Action> {
-        return .init(initialState: State(disk: disk), reducer: reducer, environment: Environment(turn: turn))
+    static func getStore(index: Int, disk: Disk? = nil) -> Store<State, Action> {
+        return .init(initialState: State(id: index, disk: disk), reducer: reducer, environment: Environment())
     }
 }

@@ -10,32 +10,34 @@ import ComposableArchitecture
 import SwiftyReversi
 
 enum Game {}
-
 extension Game {
     struct State: Equatable {
         var board: Board
+        var size: Int
         var turn: Disk = .dark
         var hasValidMoves = true
-        var darkCount = 2
-        var lightCount = 2
+        var isWaitingTap = true
         var isLoading = false
         var isPassAtPrevious = false
+        var passAlert: AlertState<Action>?
         init(size: Int) {
+            self.size = size
             board = Board(width: size, height: size)
+            board.reset()
         }
     }
     
-    enum Action {
+    enum Action: Equatable {
         case reset
         case turnStart
-        case tappedCell(Int, Int)
+        case tapped(Int, Int)
         case put(Int, Int)
         case turnEnd
         case error(String)
-        case checkHasValidMoves
         case passAlert
-        case passed
+        case alertDismissed
         case undo
+        case gameEnd
     }
     
     struct Environment {
@@ -50,33 +52,47 @@ extension Game {
                 state.board.reset()
                 return .none
             case .turnStart:
+                
+                if state.board.validMoves(for: state.turn).isEmpty {
+                    if state.isPassAtPrevious {
+                        return Effect(value: Action.gameEnd)
+                            .eraseToEffect()
+                    }
+                    state.isPassAtPrevious = true
+                    state.passAlert = .init(title: TextState("置ける場所がありません。\nパスします。"))
+                }
+                state.isPassAtPrevious = false
+                state.isLoading = false
+                state.isWaitingTap = true
                 return .none
-            case let .tappedCell(x, y):
-                guard state.board.canPlaceDisk(state.turn, atX: x, y: y) else {
+            case let .tapped(x, y):
+                guard !state.isLoading,
+                      state.isWaitingTap,
+                      state.board.canPlaceDisk(state.turn, atX: x, y: y) else {
                     return .none
                 }
                 return Effect(value: Action.put(x, y))
                     .eraseToEffect()
             case let .put(x, y):
                 try? state.board.place(state.turn, atX: x, y: y)
-                state.darkCount = state.board.count(of: .dark)
-                state.lightCount = state.board.count(of: .light)
-                state.isLoading = true
+                state.isWaitingTap = false
                 return Effect(value: Action.turnEnd)
-                    .delay(for: 0.1, scheduler: environment.mainQueue)
                     .eraseToEffect()
             case .turnEnd:
                 state.turn = state.turn.flipped
+                return Effect(value: Action.turnStart)
+                    .eraseToEffect()
+            case .passAlert:
+                return .none
+            case .alertDismissed:
+                state.passAlert = nil
+                return Effect(value: Action.turnEnd)
+                    .eraseToEffect()
+            case .undo:
                 return .none
             case .error(_):
                 return .none
-            case .checkHasValidMoves:
-                return .none
-            case .passAlert:
-                return .none
-            case .passed:
-                return .none
-            case .undo:
+            case .gameEnd:
                 return .none
             }
         }

@@ -48,36 +48,36 @@ extension Game {
                 .alert(store.scope(state: \.endAlert), dismiss: .endAlertDismissed)
             }
         }
-    }
-    private static func cell(at x: Int, _ y: Int, _ viewStore: ViewStore<State, Action>) -> some SwiftUI.View {
-        Button(
-            action: {
-                viewStore.send(.tapped(x, y))
-            }
-        ) {
-            ZStack {
-                Rectangle()
-                    .aspectRatio(1.0, contentMode: .fit)
-                    .foregroundColor(.black)
-                Rectangle()
-                    .aspectRatio(1.0, contentMode: .fit)
-                    .foregroundColor(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
-                    .padding(1)
-                switch viewStore.board[x, y] {
-                case .dark:
-                    Circle()
-                        .padding(5)
+        private func cell(at x: Int, _ y: Int, _ viewStore: ViewStore<State, Action>) -> some SwiftUI.View {
+            Button(
+                action: {
+                    viewStore.send(.tapped(x, y))
+                }
+            ) {
+                ZStack {
+                    Rectangle()
+                        .aspectRatio(1.0, contentMode: .fit)
                         .foregroundColor(.black)
-                case .light:
-                    Circle()
-                        .padding(5)
-                        .foregroundColor(.white)
-                default:
-                    EmptyView()
+                    Rectangle()
+                        .aspectRatio(1.0, contentMode: .fit)
+                        .foregroundColor(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
+                        .padding(1)
+                    switch viewStore.board[x, y] {
+                    case .dark:
+                        Circle()
+                            .padding(5)
+                            .foregroundColor(.black)
+                    case .light:
+                        Circle()
+                            .padding(5)
+                            .foregroundColor(.white)
+                    default:
+                        EmptyView()
+                    }
                 }
             }
+            .aspectRatio(contentMode: .fit)
         }
-        .aspectRatio(contentMode: .fit)
     }
 }
 

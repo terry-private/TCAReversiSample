@@ -29,7 +29,7 @@ extension Game {
     }
     
     enum Action: Equatable {
-        case reset
+        case gameStart
         case turnStart
         case tapped(Int, Int)
         case put(Int, Int)
@@ -50,9 +50,8 @@ extension Game {
     static var reducer: Reducer<State, Action, Environment> {
         .init() { state, action ,environment in
             switch action {
-            case .reset:
-                state.board.reset()
-                state.turn = .dark
+            case .gameStart:
+                state = State(size: state.size)
                 return .none
             case .turnStart:
                 if state.board.validMoves(for: state.turn).isEmpty {
@@ -107,7 +106,7 @@ extension Game {
                 return Effect(value: .gameEnd)
                     .eraseToEffect()
             case .gameEnd:
-                return Effect(value: .reset)
+                return Effect(value: .gameStart)
                     .eraseToEffect()
             }
         }

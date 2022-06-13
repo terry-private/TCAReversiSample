@@ -21,9 +21,10 @@ extension Game {
                             Text("\(viewStore.turn == .dark ? "黒" : "白")のターンです")
                                 .padding()
                         }
-                        ForEach(viewStore.board.yRange) {y in
+                        
+                        ForEach(viewStore.board.yRange, id: \.self) {y in
                             HStack(spacing: 0) {
-                                ForEach(viewStore.board.xRange) {x in
+                                ForEach(viewStore.board.xRange, id: \.self) {x in
                                     Button(
                                         action: {
                                             viewStore.send(.tapped(x, y))

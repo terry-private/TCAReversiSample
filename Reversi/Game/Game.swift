@@ -53,6 +53,7 @@ extension Game {
             case .gameStart:
                 state = State(size: state.size)
                 return .none
+                
             case .turnStart:
                 if state.board.validMoves(for: state.turn).isEmpty {
                     return Effect(value: state.isPassAtPrevious ? .endAlert : .passAlert)
@@ -61,6 +62,7 @@ extension Game {
                 state.isLoading = false
                 state.isWaitingTap = true
                 return .none
+                
             case let .tapped(x, y):
                 guard !state.isLoading,
                       state.isWaitingTap,
@@ -69,25 +71,31 @@ extension Game {
                 }
                 return Effect(value: .put(x, y))
                     .eraseToEffect()
+                
             case let .put(x, y):
                 try? state.board.place(state.turn, atX: x, y: y)
                 state.isWaitingTap = false
                 return Effect(value: .turnEnd)
                     .eraseToEffect()
+                
             case .turnEnd:
                 state.turn = state.turn.flipped
                 return Effect(value: .turnStart)
                     .eraseToEffect()
+                
             case .passAlert:
                 state.isPassAtPrevious = true
                 state.passAlert = .init(title: TextState("置ける場所がありません。\nパスします。"))
                 return .none
+                
             case .passAlertDismissed:
                 state.passAlert = nil
                 return Effect(value: .turnEnd)
                     .eraseToEffect()
+                
             case .undo:
                 return .none
+                
             case .endAlert:
                 state.isPassAtPrevious = false
                 var message = ""
@@ -101,10 +109,12 @@ extension Game {
                 }
                 state.endAlert = .init(title: TextState("ゲーム終了\n黒 \(state.board.count(of: .dark)) : 白 \(state.board.count(of: .light))\n\(message)"))
                 return .none
+                
             case .endAlertDismissed:
                 state.endAlert = nil
                 return Effect(value: .gameEnd)
                     .eraseToEffect()
+                
             case .gameEnd:
                 return Effect(value: .gameStart)
                     .eraseToEffect()

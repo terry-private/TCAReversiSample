@@ -17,51 +17,25 @@ extension Game {
             WithViewStore(store) { viewStore in
                 ZStack {
                     VStack(spacing: 0) {
+                        //////////////////////////////// HeaderView ////////////////////////////////
                         HStack {
                             Text("\(viewStore.turn == .dark ? "黒" : "白")のターンです")
                                 .padding()
                         }
                         
+                        //////////////////////////////// BoardView ////////////////////////////////
                         ForEach(viewStore.board.yRange, id: \.self) {y in
                             HStack(spacing: 0) {
                                 ForEach(viewStore.board.xRange, id: \.self) {x in
-                                    Button(
-                                        action: {
-                                            viewStore.send(.tapped(x, y))
-                                        }
-                                    ) {
-                                        ZStack {
-                                            Rectangle()
-                                                .aspectRatio(1.0, contentMode: .fit)
-                                                .foregroundColor(.black)
-                                            Rectangle()
-                                                .aspectRatio(1.0, contentMode: .fit)
-                                                .foregroundColor(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
-                                                .padding(1)
-                                            switch viewStore.board[x, y] {
-                                            case .dark:
-                                                Circle()
-                                                    .padding(5)
-                                                    .foregroundColor(.black)
-                                            case .light:
-                                                Circle()
-                                                    .padding(5)
-                                                    .foregroundColor(.white)
-                                            default:
-                                                EmptyView()
-                                            }
-                                        }
-                                    }
-                                    .aspectRatio(contentMode: .fit)
+                                    cell(at: x, y, viewStore)
                                 }
                             }
                         }
                         Spacer()
                     }
                     .padding()
-                    .alert(store.scope(state: \.passAlert), dismiss: .passAlertDismissed)
-                    .alert(store.scope(state: \.endAlert), dismiss: .endAlertDismissed)
                     
+                    //////////////////////////////// LoadingView ////////////////////////////////
                     if viewStore.isLoading {
                         ProgressView("Now Loading...")
                             .fixedSize()
@@ -70,8 +44,40 @@ extension Game {
                             .opacity(0.5)
                     }
                 }
+                .alert(store.scope(state: \.passAlert), dismiss: .passAlertDismissed)
+                .alert(store.scope(state: \.endAlert), dismiss: .endAlertDismissed)
             }
         }
+    }
+    private static func cell(at x: Int, _ y: Int, _ viewStore: ViewStore<State, Action>) -> some SwiftUI.View {
+        Button(
+            action: {
+                viewStore.send(.tapped(x, y))
+            }
+        ) {
+            ZStack {
+                Rectangle()
+                    .aspectRatio(1.0, contentMode: .fit)
+                    .foregroundColor(.black)
+                Rectangle()
+                    .aspectRatio(1.0, contentMode: .fit)
+                    .foregroundColor(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
+                    .padding(1)
+                switch viewStore.board[x, y] {
+                case .dark:
+                    Circle()
+                        .padding(5)
+                        .foregroundColor(.black)
+                case .light:
+                    Circle()
+                        .padding(5)
+                        .foregroundColor(.white)
+                default:
+                    EmptyView()
+                }
+            }
+        }
+        .aspectRatio(contentMode: .fit)
     }
 }
 

@@ -59,8 +59,8 @@ extension Game {
                         Spacer()
                     }
                     .padding()
-                    .alert(store.scope(state: \.passAlert), dismiss: .alertDismissed)
-                    
+                    .alert(store.scope(state: \.passAlert), dismiss: .passAlertDismissed)
+                    .alert(store.scope(state: \.endAlert), dismiss: .endAlertDismissed)
                     
                     if viewStore.isLoading {
                         ProgressView("Now Loading...")

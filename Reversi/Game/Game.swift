@@ -20,6 +20,7 @@ extension Game {
         var isLoading = false
         var isPassAtPrevious = false
         var passAlert: AlertState<Action>?
+        var endAlert: AlertState<Action>?
         init(size: Int) {
             self.size = size
             board = Board(width: size, height: size)
@@ -33,10 +34,11 @@ extension Game {
         case tapped(Int, Int)
         case put(Int, Int)
         case turnEnd
-        case error(String)
-        case passAlert
-        case alertDismissed
         case undo
+        case passAlert
+        case passAlertDismissed
+        case endAlert
+        case endAlertDismissed
         case gameEnd
     }
     
@@ -50,16 +52,11 @@ extension Game {
             switch action {
             case .reset:
                 state.board.reset()
+                state.turn = .dark
                 return .none
             case .turnStart:
                 if state.board.validMoves(for: state.turn).isEmpty {
-                    if state.isPassAtPrevious {
-                        return Effect(value: .gameEnd)
-                            .eraseToEffect()
-                    }
-                    state.isPassAtPrevious = true
-                    state.passAlert = .init(title: TextState("置ける場所がありません。\nパスします。"))
-                    return .none
+                    return Effect(value: state.isPassAtPrevious ? .endAlert : .passAlert)
                 }
                 state.isPassAtPrevious = false
                 state.isLoading = false
@@ -83,15 +80,32 @@ extension Game {
                 return Effect(value: .turnStart)
                     .eraseToEffect()
             case .passAlert:
+                state.isPassAtPrevious = true
+                state.passAlert = .init(title: TextState("置ける場所がありません。\nパスします。"))
                 return .none
-            case .alertDismissed:
+            case .passAlertDismissed:
                 state.passAlert = nil
                 return Effect(value: .turnEnd)
                     .eraseToEffect()
             case .undo:
                 return .none
-            case .error(_):
+            case .endAlert:
+                state.isPassAtPrevious = false
+                var message = ""
+                switch state.board.sideWithMoreDisks() {
+                case .light:
+                    message = "白の勝ち"
+                case .dark:
+                    message = "黒の勝ち"
+                case nil:
+                    message = "引き分け"
+                }
+                state.endAlert = .init(title: TextState("ゲーム終了\n黒 \(state.board.count(of: .dark)) : 白 \(state.board.count(of: .light))\n\(message)"))
                 return .none
+            case .endAlertDismissed:
+                state.endAlert = nil
+                return Effect(value: .gameEnd)
+                    .eraseToEffect()
             case .gameEnd:
                 return Effect(value: .reset)
                     .eraseToEffect()

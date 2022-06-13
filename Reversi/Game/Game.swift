@@ -52,14 +52,14 @@ extension Game {
                 state.board.reset()
                 return .none
             case .turnStart:
-                
                 if state.board.validMoves(for: state.turn).isEmpty {
                     if state.isPassAtPrevious {
-                        return Effect(value: Action.gameEnd)
+                        return Effect(value: .gameEnd)
                             .eraseToEffect()
                     }
                     state.isPassAtPrevious = true
                     state.passAlert = .init(title: TextState("置ける場所がありません。\nパスします。"))
+                    return .none
                 }
                 state.isPassAtPrevious = false
                 state.isLoading = false
@@ -71,29 +71,30 @@ extension Game {
                       state.board.canPlaceDisk(state.turn, atX: x, y: y) else {
                     return .none
                 }
-                return Effect(value: Action.put(x, y))
+                return Effect(value: .put(x, y))
                     .eraseToEffect()
             case let .put(x, y):
                 try? state.board.place(state.turn, atX: x, y: y)
                 state.isWaitingTap = false
-                return Effect(value: Action.turnEnd)
+                return Effect(value: .turnEnd)
                     .eraseToEffect()
             case .turnEnd:
                 state.turn = state.turn.flipped
-                return Effect(value: Action.turnStart)
+                return Effect(value: .turnStart)
                     .eraseToEffect()
             case .passAlert:
                 return .none
             case .alertDismissed:
                 state.passAlert = nil
-                return Effect(value: Action.turnEnd)
+                return Effect(value: .turnEnd)
                     .eraseToEffect()
             case .undo:
                 return .none
             case .error(_):
                 return .none
             case .gameEnd:
-                return .none
+                return Effect(value: .reset)
+                    .eraseToEffect()
             }
         }
     }

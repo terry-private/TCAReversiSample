@@ -13,7 +13,7 @@ extension Game {
     struct View: SwiftUI.View {
         let boardSize = 8
         let store: Store<State, Action>
-        var body: some  SwiftUI.View {
+        var body: some SwiftUI.View {
             WithViewStore(store) { viewStore in
                 ZStack {
                     VStack(spacing: 0) {
@@ -44,6 +44,9 @@ extension Game {
                             .opacity(0.5)
                     }
                 }
+                .fullScreenCover(isPresented: viewStore.binding(get: \.shouldShowSetting, send: Action.toggleSetting)) {
+                    Setting.View(store: store.scope(state: \.setting,action: Action.endSetting))
+                }
                 .alert(store.scope(state: \.passAlert), dismiss: .passAlertDismissed)
                 .alert(store.scope(state: \.endAlert), dismiss: .endAlertDismissed)
             }
@@ -56,12 +59,9 @@ extension Game {
             ) {
                 ZStack {
                     Rectangle()
+                        .stroke(.black, lineWidth: 1)
                         .aspectRatio(1.0, contentMode: .fit)
-                        .foregroundColor(.black)
-                    Rectangle()
-                        .aspectRatio(1.0, contentMode: .fit)
-                        .foregroundColor(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
-                        .padding(1)
+                        .background(Color(red: 0.3, green: 0.5, blue: 0.3, opacity: 1))
                     switch viewStore.board[x, y] {
                     case .dark:
                         Circle()

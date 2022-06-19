@@ -18,6 +18,7 @@
 		095F69822854F13300743A46 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F69812854F13300743A46 /* GameView.swift */; };
 		095F69852854F37A00743A46 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = 095F69842854F37A00743A46 /* ComposableArchitecture */; };
 		095F698A2855118300743A46 /* SwiftyReversi in Frameworks */ = {isa = PBXBuildFile; productRef = 095F69892855118300743A46 /* SwiftyReversi */; };
+		095F698D285DA71B00743A46 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F698C285DA71B00743A46 /* Setting.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -50,6 +51,7 @@
 		095F69682854E5D900743A46 /* ReversiUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReversiUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		095F697F2854F11100743A46 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		095F69812854F13300743A46 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		095F698C285DA71B00743A46 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 		095F697E2854F0FB00743A46 /* Game */ = {
 			isa = PBXGroup;
 			children = (
+				095F698C285DA71B00743A46 /* Setting.swift */,
 				095F697F2854F11100743A46 /* Game.swift */,
 				095F69812854F13300743A46 /* GameView.swift */,
 			);
@@ -285,6 +288,7 @@
 			files = (
 				095F694E2854E5D300743A46 /* ContentView.swift in Sources */,
 				095F69802854F11100743A46 /* Game.swift in Sources */,
+				095F698D285DA71B00743A46 /* Setting.swift in Sources */,
 				095F69822854F13300743A46 /* GameView.swift in Sources */,
 				095F694C2854E5D300743A46 /* ReversiApp.swift in Sources */,
 			);

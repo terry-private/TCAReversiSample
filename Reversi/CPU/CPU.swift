@@ -8,4 +8,9 @@
 import Foundation
 import SwiftyReversi
 
-enum CPU {}
+enum CPU {
+    static func put(board: Board, side: Disk) -> (Int, Int)? {
+        let validMoves = board.validMoves(for: side)
+        return validMoves.randomElement()
+    }
+}

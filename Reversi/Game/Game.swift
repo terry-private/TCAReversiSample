@@ -63,27 +63,40 @@ extension Game {
                     return .none
                 case let .endSetting(action):
                     switch action {
-                    case let .start(setting):
+                    case let .set(setting):
                         state.setting = setting
                         state.board = Board(width: setting.size.value, height: setting.size.value)
                         state.board.reset()
                         state.shouldShowSetting = false
                     default:
-                        break
+                        return .none
                     }
-                    return .none
+                    return Effect(value: .gameStart)
+                        .delay(for: 0.3, scheduler: environment.mainQueue)
+                        .eraseToEffect()
                 case .gameStart:
-                    // 始まったことを示すアニメーションとかあっ他方がいいかも
-                    return .none
+                    // 始まったことを示すアニメーションとかあった方がいいかも
+                    return Effect(value: .turnStart)
+                        .eraseToEffect()
                     
                 case .turnStart:
                     if state.board.validMoves(for: state.turn).isEmpty {
                         return Effect(value: state.isPassAtPrevious ? .endAlert : .passAlert)
                     }
-                    state.isPassAtPrevious = false
-                    state.isLoading = false
-                    state.isWaitingTap = true
-                    return .none
+                    switch state.setting.player(state.turn) {
+                    case .human:
+                        state.isPassAtPrevious = false
+                        state.isLoading = false
+                        state.isWaitingTap = true
+                        return .none
+                    case .cpu:
+                        guard let (x, y) = CPU.put(board: state.board, side: state.turn) else {
+                            return Effect(value: .passAlert)
+                                .eraseToEffect()
+                        }
+                        return Effect(value: .put(x, y))
+                            .eraseToEffect()
+                    }
                     
                 case let .tapped(x, y):
                     guard !state.isLoading,
@@ -98,6 +111,7 @@ extension Game {
                     try? state.board.place(state.turn, atX: x, y: y)
                     state.isWaitingTap = false
                     return Effect(value: .turnEnd)
+                        .delay(for: 0.1, scheduler: environment.mainQueue)
                         .eraseToEffect()
                     
                 case .turnEnd:

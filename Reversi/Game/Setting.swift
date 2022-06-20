@@ -39,7 +39,7 @@ extension Setting {
         }
     }
     enum Action: Equatable {
-        case start(State)
+        case set(State)
         case setDarkPlayer(Int)
         case setLightPlayer(Int)
         case setSize(Int)
@@ -48,7 +48,7 @@ extension Setting {
     
     static var reducer = Reducer<State, Action, Environment> { state, action, _ in
         switch action {
-        case .start(_):
+        case .set(_):
             return .none
         case let .setDarkPlayer(rawValue):
             state.darkPlayer = Player(rawValue: rawValue) ?? .human
@@ -155,7 +155,7 @@ extension Setting {
                         VStack {
                             Spacer()
                             Button {
-                                viewStore.send(.start(viewStore.state))
+                                viewStore.send(.set(viewStore.state))
                             } label: {
                                 Text("開始")
                                     .frame(width: 200.0, height: 40.0)
@@ -167,9 +167,6 @@ extension Setting {
                         }
                     }
                     .navigationTitle("ゲームモード")
-                    .onDisappear {
-                        viewStore.send(.start(viewStore.state))
-                    }
                 }
             }
         }

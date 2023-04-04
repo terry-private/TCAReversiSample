@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     var body: some View {
         Game.View(store: Game.store)
+//        Setting.View(store: Setting.store)
     }
 }
 

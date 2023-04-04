@@ -21,6 +21,9 @@
 		095F698D285DA71B00743A46 /* Setting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 095F698C285DA71B00743A46 /* Setting.swift */; };
 		09A411A9285F51A900DFF945 /* CPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A411A8285F51A900DFF945 /* CPU.swift */; };
 		09A411AB285F522700DFF945 /* CPUTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A411AA285F522700DFF945 /* CPUTests.swift */; };
+		09A411AE2863420500DFF945 /* Board.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A411AD2863420500DFF945 /* Board.swift */; };
+		09A411B02863424100DFF945 /* Disk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A411AF2863424100DFF945 /* Disk.swift */; };
+		09C1FE502869F7FA00D5BA9D /* SafeBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C1FE4F2869F7FA00D5BA9D /* SafeBoard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +59,9 @@
 		095F698C285DA71B00743A46 /* Setting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Setting.swift; sourceTree = "<group>"; };
 		09A411A8285F51A900DFF945 /* CPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPU.swift; sourceTree = "<group>"; };
 		09A411AA285F522700DFF945 /* CPUTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CPUTests.swift; sourceTree = "<group>"; };
+		09A411AD2863420500DFF945 /* Board.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Board.swift; sourceTree = "<group>"; };
+		09A411AF2863424100DFF945 /* Disk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Disk.swift; sourceTree = "<group>"; };
+		09C1FE4F2869F7FA00D5BA9D /* SafeBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafeBoard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +116,9 @@
 			children = (
 				095F694B2854E5D300743A46 /* ReversiApp.swift */,
 				095F694D2854E5D300743A46 /* ContentView.swift */,
+				09A411AD2863420500DFF945 /* Board.swift */,
+				09A411AF2863424100DFF945 /* Disk.swift */,
+				09A411AC286341CA00DFF945 /* New Group */,
 				09A411A7285F519200DFF945 /* CPU */,
 				095F697E2854F0FB00743A46 /* Game */,
 				095F694F2854E5D900743A46 /* Assets.xcassets */,
@@ -158,8 +167,16 @@
 			isa = PBXGroup;
 			children = (
 				09A411A8285F51A900DFF945 /* CPU.swift */,
+				09C1FE4F2869F7FA00D5BA9D /* SafeBoard.swift */,
 			);
 			path = CPU;
+			sourceTree = "<group>";
+		};
+		09A411AC286341CA00DFF945 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -303,10 +320,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09A411B02863424100DFF945 /* Disk.swift in Sources */,
 				095F694E2854E5D300743A46 /* ContentView.swift in Sources */,
 				095F69802854F11100743A46 /* Game.swift in Sources */,
 				09A411A9285F51A900DFF945 /* CPU.swift in Sources */,
 				095F698D285DA71B00743A46 /* Setting.swift in Sources */,
+				09C1FE502869F7FA00D5BA9D /* SafeBoard.swift in Sources */,
+				09A411AE2863420500DFF945 /* Board.swift in Sources */,
 				095F69822854F13300743A46 /* GameView.swift in Sources */,
 				095F694C2854E5D300743A46 /* ReversiApp.swift in Sources */,
 			);

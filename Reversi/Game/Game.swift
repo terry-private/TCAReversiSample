@@ -8,8 +8,14 @@
 import ComposableArchitecture
 import SwiftyReversi
 
+extension Result: Equatable {}
+
 enum Game {}
 extension Game {
+    enum PutError: Error, Equatable{
+        case invalidMove
+        case timeOver
+    }
     struct State: Equatable {
         var board: Board
         var turn: Disk = .dark
@@ -29,12 +35,33 @@ extension Game {
     }
     
     enum Action: Equatable {
+        static func == (lhs: Game.Action, rhs: Game.Action) -> Bool {
+            switch lhs {
+            case let .put(.success((x,y))):
+                switch rhs {
+                case let .put(.success((x1,y1))):
+                    return x == x1 && y == y1
+                default:
+                    return false
+                }
+            case .put:
+                switch rhs {
+                case .put(.failure):
+                    return true
+                default:
+                    return false
+                }
+            default:
+                return lhs == rhs
+            }
+        }
+        
         case toggleSetting(Bool)
         case endSetting(Setting.Action)
         case gameStart
         case turnStart
         case tapped(Int, Int)
-        case put(Int, Int)
+        case put(Result<(Int, Int), PutError>)
         case turnEnd
         case undo
         case passAlert
@@ -47,6 +74,16 @@ extension Game {
     struct Environment {
         var mainQueue: AnySchedulerOf<DispatchQueue> = .main
         var histories: [Board] = []
+        func putCpu(board: Board, side: Disk) -> Effect<(Int, Int), PutError> {
+            Effect.task {
+                let task: Task<(Int, Int), Error> = Task.detached(priority: .background) {
+                    return try! await CPU.put2(board: board, side: side)!
+                }
+                return try! await task.value
+            }
+            .setFailureType(to: PutError.self)
+            .eraseToEffect()
+        }
     }
     
     static var reducer: Reducer<State, Action, Environment> {
@@ -90,12 +127,14 @@ extension Game {
                         state.isWaitingTap = true
                         return .none
                     case .cpu:
-                        guard let (x, y) = CPU.put(board: state.board, side: state.turn) else {
-                            return Effect(value: .passAlert)
-                                .eraseToEffect()
-                        }
-                        return Effect(value: .put(x, y))
-                            .eraseToEffect()
+//                        guard let (_, _) = CPU.put(board: state.board, side: state.turn) else {
+//                            return Effect(value: .passAlert)
+//                                .eraseToEffect()
+//                        }
+                        state.isLoading = true
+                        return environment.putCpu(board: state.board, side: state.turn)
+                            .receive(on: environment.mainQueue)
+                            .catchToEffect(Action.put)
                     }
                     
                 case let .tapped(x, y):
@@ -104,15 +143,17 @@ extension Game {
                           state.board.canPlaceDisk(state.turn, atX: x, y: y) else {
                         return .none
                     }
-                    return Effect(value: .put(x, y))
+                    return Effect(value: .put(.success((x, y))))
                         .eraseToEffect()
                     
-                case let .put(x, y):
+                case let .put(.success((x, y))):
                     try? state.board.place(state.turn, atX: x, y: y)
+                    state.isLoading = false
                     state.isWaitingTap = false
                     return Effect(value: .turnEnd)
-                        .delay(for: 0.1, scheduler: environment.mainQueue)
                         .eraseToEffect()
+                case .put:
+                    return .none
                     
                 case .turnEnd:
                     state.turn = state.turn.flipped
